@@ -1,6 +1,6 @@
 const checkLength = (string, maxLength) => string.length <= maxLength;
 
-checkLength('asdfghjkl', 10);
+checkLength('asdfghjkl', 12);
 
 function isPalindrome (inputString) {
   const str = inputString.replaceAll(' ', '').toLowerCase();
@@ -12,4 +12,4 @@ function isPalindrome (inputString) {
   return true;
 }
 
-isPalindrome('Лёша на полке клопа нашёл');
+isPalindrome('ШАЛАШ');
