@@ -13,3 +13,27 @@ function isPalindrome (inputString) {
 }
 
 isPalindrome('ШАЛАШ');
+
+function validateMeeting(startTime, endTime, meetingStart, meetingDuration) {
+  const startOfWorkday = parseTime(startTime);
+  const endOfWorkday = parseTime(endTime);
+  const startOfMeeting = parseTime(meetingStart);
+  const endOfMeeting = addMinutes(startOfMeeting, meetingDuration);
+
+  if (startOfMeeting < startOfWorkday || endOfMeeting > endOfWorkday) {
+    return false;
+  }
+
+  return true;
+}
+
+function parseTime(timeString) {
+  const [hours, minutes] = timeString.split(':').map(Number);
+  return hours * 60 + minutes;
+}
+
+function addMinutes(time, minutes) {
+  return time + minutes;
+}
+
+validateMeeting('08:00', '17:30', '14:00', 90);
