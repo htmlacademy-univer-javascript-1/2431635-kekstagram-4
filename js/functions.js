@@ -1,10 +1,12 @@
+const MINUTES_IN_HOUR = 60;
+
 const checkLength = (string, maxLength) => string.length <= maxLength;
 
 checkLength('asdfghjkl', 12);
 
 function isPalindrome (inputString) {
   const str = inputString.replaceAll(' ', '').toLowerCase();
-  for (let i = 0; i < str.length/2; i++) {
+  for (let i = 0; i < str.length / 2; i++) {
     if (str[i] !== str[str.length - 1 - i]) {
       return false;
     }
@@ -29,7 +31,7 @@ function validateMeeting(startTime, endTime, meetingStart, meetingDuration) {
 
 function parseTime(timeString) {
   const [hours, minutes] = timeString.split(':').map(Number);
-  return hours * 60 + minutes;
+  return hours * MINUTES_IN_HOUR + minutes;
 }
 
 function addMinutes(time, minutes) {
