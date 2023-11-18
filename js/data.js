@@ -1,10 +1,11 @@
-import {getRandomArrayElement, getRandomInt, generateID} from "./util.js"
-
+import {getRandomArrayElement, getRandomInt, generateID} from './util.js';
 const PHOTO_COUNT = 25;
 const AVATAR_COUNT = 6;
 const LIKE_MIN_COUNT = 15;
 const LIKE_MAX_COUNT = 200;
 const COMMENT_COUNT = 38;
+const MIN_COMMENTS = 0;
+const MAX_MESSAGE_LENGTH = 2;
 
 const MESSAGES = [
   'Всё отлично!',
@@ -37,37 +38,27 @@ const NAMES = [
 ];
 
 const generateCommentID = generateID();
+const getUrlId = generateID();
+const getPictureId = generateID();
 
-const createMessage = () => Array.from (
-  {length: getRandomInt(1,2)},
-  () => getRandomArrayElement (MESSAGES),
-).join(' ');
 
-const createComment = () => {
-  return {
-    id:generateCommentID(),
-    avatar: 'img/avatar-' + getRandomInt(1,AVATAR_COUNT) + '.svg',
-    message: createMessage(),
-    name: getRandomArrayElement(NAMES),
-  }
-};
+const createComment = () => ({
+  id: generateCommentID(),
+  avatar: `imag/avatar-${getRandomInt(1, AVATAR_COUNT)}.svg`,
+  message: Array.from({length: getRandomInt(1, MAX_MESSAGE_LENGTH)}, () => getRandomArrayElement(MESSAGES)).join(' '),
+  name: getRandomArrayElement(NAMES),
+});
 
-const creatPhotos = (index) => {
-  return {
-    id: index,
-    url: photos/{{index}}.jpg,
-    description: getRandomArrayElement(DESCRIPTION),
-    likes: getRandomInt(LIKE_MIN_COUNT, LIKE_MAX_COUNT),
-    comments: Array.from (
-      {length: getRandomInt(0, COMMENT_COUNT)},
-      createComment,
-    ),
-  }
-};
 
-const generatePhotos = () => Array.from (
-  {length: PHOTO_COUNT},
-  {_, photoIndex} => creatPhotos(photoIndex + 1),
-);
+const creatPhoto = () => ({
+  id: getPictureId(),
+  url: `photos/${getUrlId()}.jpg`,
+  description: getRandomArrayElement(DESCRIPTION),
+  likes: getRandomInt(LIKE_MIN_COUNT, LIKE_MAX_COUNT),
+  comments: Array.from({length: getRandomInt(MIN_COMMENTS, COMMENT_COUNT)}, () => createComment()),
+});
 
-export {generatePhotos};
+
+const creatPhotos = () => Array.from({length: PHOTO_COUNT}, () => creatPhoto());
+
+export {creatPhotos};
