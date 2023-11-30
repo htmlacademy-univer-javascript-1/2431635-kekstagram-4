@@ -12,8 +12,8 @@ const generateID = () => {
     return lastGeneretedID;
   };
 };
-const isEscapeKey = (evt) => evt.key === 'Escape';
+
 const getRandomArrayElement = (array) => array[getRandomInt(0, array.length - 1)];
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
 export {getRandomArrayElement, getRandomInt, generateID, isEscapeKey};
-

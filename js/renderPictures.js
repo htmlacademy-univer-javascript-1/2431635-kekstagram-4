@@ -1,4 +1,4 @@
-import {openPicture} from './fullsizeMode.js';
+import { openPicture } from './fullsizeMode.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const picturesContainer = document.querySelector('.pictures');
@@ -8,7 +8,7 @@ const renderPicture = (picture) => {
   const clonedPicture = pictureTemplate.cloneNode(true);
   clonedPicture.querySelector('img').src = url;
   clonedPicture.querySelector('img').alt = description;
-  clonedPicture.querySelector('.picture__likes').texqtContent = likes;
+  clonedPicture.querySelector('.picture__likes').textContent = likes;
   clonedPicture.querySelector('.picture__comments').textContent = comments.length;
   clonedPicture.addEventListener('click', () => {
     openPicture(picture);
