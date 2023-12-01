@@ -44,7 +44,7 @@ const getPictureId = generateID();
 
 const createComment = () => ({
   id: generateCommentID(),
-  avatar: `imag/avatar-${getRandomInt(1, AVATAR_COUNT)}.svg`,
+  avatar: `img/avatar-${getRandomInt(1, AVATAR_COUNT)}.svg`,
   message: Array.from({length: getRandomInt(1, MAX_MESSAGE_LENGTH)}, () => getRandomArrayElement(MESSAGES)).join(' '),
   name: getRandomArrayElement(NAMES),
 });
