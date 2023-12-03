@@ -1,4 +1,4 @@
-import { openPicture } from './fullsizeMode.js';
+import { openPicture } from './fullsizePictureMode.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const picturesContainer = document.querySelector('.pictures');
