@@ -6,6 +6,9 @@ const LIKE_MAX_COUNT = 200;
 const COMMENT_COUNT = 38;
 const MIN_COMMENTS = 0;
 const MAX_MESSAGE_LENGTH = 2;
+const NUMBER_LOADED_COMMENTS = 5;
+const MAX_SYMBOLS_COMMENT_LENGTH = 140;
+const MAX_HASHTAGS_COUNT = 5;
 
 const MESSAGES = [
   'Всё отлично!',
@@ -61,4 +64,4 @@ const creatPhoto = () => ({
 
 const creatPhotos = () => Array.from({length: PHOTO_COUNT}, () => creatPhoto());
 
-export {creatPhotos};
+export {creatPhotos, NUMBER_LOADED_COMMENTS, MAX_SYMBOLS_COMMENT_LENGTH, MAX_HASHTAGS_COUNT};
