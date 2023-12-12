@@ -1,6 +1,5 @@
 import {isEscapeKey} from './util.js';
-
-const NUMBER_LOADED_COMMENTS = 5;
+import {NUMBER_LOADED_COMMENTS} from './data.js';
 
 const fullsizePicture = document.querySelector('.big-picture');
 const body = document.body;
