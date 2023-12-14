@@ -32,6 +32,10 @@ function closeByEscape(evt) { //function должна использоватьс
 pictureUploadInput.addEventListener('change', () => {
   pictureOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  document.querySelector('.effect-level__slider').parentNode.classList.add('hidden');
+  document.querySelector('.scale__control--value').value = '100%';
+  document.querySelector('.img-upload__preview img').style.transform = 'scale(1.00)';
+  document.querySelector('.img-upload__preview img').style.filter = 'none';
   closeButton.addEventListener('click', closeOverlay);
   document.addEventListener('keydown', closeByEscape);
 });
