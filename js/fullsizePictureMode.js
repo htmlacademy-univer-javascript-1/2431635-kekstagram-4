@@ -1,5 +1,6 @@
 import {isEscapeKey} from './util.js';
-import {NUMBER_LOADED_COMMENTS} from './data.js';
+
+const NUMBER_LOADED_COMMENTS = 5;
 
 const fullsizePicture = document.querySelector('.big-picture');
 const body = document.body;
@@ -7,6 +8,7 @@ const closeButton = fullsizePicture.querySelector('#picture-cancel');
 const loaderButton = fullsizePicture.querySelector('.comments-loader');
 const currentComments = fullsizePicture.querySelector('.current-comments');
 const commentTemplate = document.querySelector('#social__comment').content.querySelector('.social__comment');
+
 
 const createComment = (comment) => {
   const clonedComment = commentTemplate.cloneNode(true);
@@ -32,13 +34,15 @@ const fillComments = (comments) => {
 const closePicture = () => {
   body.classList.remove('modal-open');
   fullsizePicture.classList.add('hidden');
+  closeButton.removeEventListener('click', closePicture);
   document.removeEventListener('keydown', closeByEscape);
 };
 
-const closeByEscape = (evt) => {
+function closeByEscape(evt) { //function должна использоваться как бы совместно с closePicture, иначе они закольцуются, то есть нужно (всплытие)
   if (isEscapeKey(evt)) {
-    closePicture();}
-};
+    closePicture();
+  }
+}
 
 const openComments = () => {
   const hiddenComments = fullsizePicture.querySelectorAll('.social__comment.hidden');
