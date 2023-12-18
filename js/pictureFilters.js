@@ -1,3 +1,4 @@
+const STEP_SIZE = 25;
 const scaleSmallerButton = document.querySelector('.scale__control--smaller');
 const scaleBiggerButton = document.querySelector('.scale__control--bigger');
 const scaleInput = document.querySelector('.scale__control--value');
@@ -9,16 +10,16 @@ let filterName = '';
 
 scaleSmallerButton.addEventListener('click', () => {
   const scaleInputValue = Number(scaleInput.value.split('%')[0]);
-  if (scaleInputValue - 25 >= 25) {
-    scaleInput.value = `${scaleInputValue - 25}%`;
+  if (scaleInputValue - STEP_SIZE >= STEP_SIZE) {
+    scaleInput.value = `${scaleInputValue - STEP_SIZE}%`;
     picturePreview.style.transform = `scale(${Number(scaleInput.value.split('%')[0])/100})`;
   }
 });
 
 scaleBiggerButton.addEventListener('click', () => {
   const scaleInputValue = Number(scaleInput.value.split('%')[0]);
-  if (scaleInputValue + 25  <= 100) {
-    scaleInput.value = `${scaleInputValue + 25}%`;
+  if (scaleInputValue + STEP_SIZE  <= 100) {
+    scaleInput.value = `${scaleInputValue + STEP_SIZE}%`;
     picturePreview.style.transform = `scale(${Number(scaleInput.value.split('%')[0])/100})`;
   }
 });
