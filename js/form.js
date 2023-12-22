@@ -4,6 +4,7 @@ import {showSuccessMessage, showErrorMessage} from './formMessage.js';
 
 const MAX_SYMBOLS_COMMENT_LENGTH = 140;
 const MAX_HASHTAGS_COUNT = 5;
+const FILE_TYPES = ['png', 'gif', 'jpg', 'jpeg'];
 
 const body = document.body;
 const form = document.querySelector('.img-upload__form');
@@ -14,6 +15,8 @@ const commentField = form.querySelector('.text__description');
 const hashtagsField = form.querySelector('.text__hashtags');
 const picturePreview = document.querySelector('.img-upload__preview img');
 const submitButton = form.querySelector('.img-upload__submit');
+const pictureFile = document.querySelector('.img-upload__start input[type=file]');
+const effectsPreviews = document.querySelectorAll('.effects__list span');
 
 const hashtagRegExp = /^#[a-zа-яё0-9]{1,19}$/i;
 const pristine = new Pristine(form, {
@@ -25,16 +28,20 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__error'
 });
 
-const closeOverlay =() => {
+const closeOverlay = (isCleanHashtagsComment = true) => {
   body.classList.remove('modal-open');
   pictureOverlay.classList.add('hidden');
   closeButton.removeEventListener('click', closeOverlay);
-  document.removeEventListener('keydown', closeByEscape);
+  document.removeEventListener('keydown', onEscapeKeydown);
   pictureUploadInput.value = '';
   pristine.reset();
+  if (isCleanHashtagsComment) {
+    commentField.value = '';
+    hashtagsField.value = '';
+  }
 };
 
-function closeByEscape(evt) { //function должна использоваться как бы совместно с closeOverlay, иначе они закольцуются, то есть нужно (всплытие)
+function onEscapeKeydown(evt) { //function должна использоваться совместно с hideMessage,  важно для предотвращения зацикливания
   if(isEscapeKey(evt)) {
     const activeElement = document.activeElement.attributes.type;
     if (typeof(activeElement) !== 'undefined' && activeElement.value === 'text'){
@@ -53,19 +60,34 @@ pictureUploadInput.addEventListener('change', () => {
   document.querySelector('.scale__control--value').value = '100%';
   picturePreview.removeAttribute('style');
   closeButton.addEventListener('click', closeOverlay);
-  document.addEventListener('keydown', closeByEscape);
+  document.addEventListener('keydown', onEscapeKeydown);
+});
+
+pictureFile.addEventListener('change', () => {
+  const file = pictureFile.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  const pictureObject = URL.createObjectURL(file);
+  if (matches) {
+    picturePreview.src = pictureObject;
+    effectsPreviews.forEach((element) => {
+      element.style.backgroundImage = `url(${pictureObject})`;
+    });
+  }
 });
 
 const validateComment = (value) => value.length <= MAX_SYMBOLS_COMMENT_LENGTH;
 
-pristine.addValidator(commentField, validateComment, 'Комментарий до 140 символов');
+pristine.addValidator(commentField, validateComment, `Комментарий должен содержать до ${MAX_SYMBOLS_COMMENT_LENGTH} символов`);
 
-const validateHashtagsCount = (value) => value.trim().split(' ').length <= MAX_HASHTAGS_COUNT;
+const normalizeHashtags = (hashtagsString) => hashtagsString.trim().split(' ').filter((tag) =>  Boolean(tag.length));
 
-const validateHashtags = (value) => value.trim() === '' ? true : value.trim().split(' ').every((hashtag) => hashtagRegExp.test(hashtag));
+const validateHashtagsCount = (value) => normalizeHashtags(value).length <= MAX_HASHTAGS_COUNT;
+
+const validateHashtags = (value) => value.trim() === '' ? true : normalizeHashtags(value).every((hashtag) => hashtagRegExp.test(hashtag));
 
 const validateHashtagsUniqueness  = (value) => {
-  const hashtags = value.trim().split(' ');
+  const hashtags = normalizeHashtags(value.toLowerCase());
   const tempArr = [];
   for (let i = 0; i < hashtags.length; i++){
     if(tempArr.includes(hashtags[i])){
@@ -89,11 +111,12 @@ form.addEventListener('submit', async (evt) => {
     await sendData(new FormData(form))
       .then(() => {
         showSuccessMessage();
-        commentField.value = '';
-        hashtagsField.value = '';
+        closeOverlay();
       })
-      .catch(() => showErrorMessage());
+      .catch(() => {
+        showErrorMessage();
+        closeOverlay(false);
+      });
     submitButton.disabled = false;
-    closeOverlay();
   }
 });
