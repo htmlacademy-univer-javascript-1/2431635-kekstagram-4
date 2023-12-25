@@ -1,7 +1,7 @@
-import { openPicture } from './fullsizePictureMode.js';
+import {openPicture} from './fullsizePictureMode.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const picturesContainer = document.querySelector('.pictures');
+const picturesContainerElement = document.querySelector('.pictures');
 
 const renderPicture = (picture) => {
   const {url, description, likes, comments} = picture;
@@ -21,7 +21,7 @@ const renderPictures = (pictures) => {
   pictures.forEach((picture) => {
     fragment.append(renderPicture(picture));
   });
-  picturesContainer.append(fragment);
+  picturesContainerElement.append(fragment);
 };
 
 export {renderPictures};

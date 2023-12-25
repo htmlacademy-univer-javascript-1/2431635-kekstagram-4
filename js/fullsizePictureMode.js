@@ -9,36 +9,36 @@ const loaderButton = fullsizePicture.querySelector('.comments-loader');
 const currentComments = fullsizePicture.querySelector('.current-comments');
 const commentTemplate = document.querySelector('#social__comment').content.querySelector('.social__comment');
 
-
 const createComment = (comment) => {
   const clonedComment = commentTemplate.cloneNode(true);
   const {avatar, name, message} = comment;
-  clonedComment.querySelector('.social__picture').src = avatar;
-  clonedComment.querySelector('.social__picture').alt = name;
+  const commentatorAvatar = clonedComment.querySelector('.social__picture');
+  commentatorAvatar.src = avatar;
+  commentatorAvatar.alt = name;
   clonedComment.querySelector('.social__text').textContent = message;
   clonedComment.classList.add('hidden');
   return clonedComment;
 };
 
 const fillComments = (comments) => {
-  const commentsContainer = fullsizePicture.querySelector('.social__comments');
+  const commentsContainerElement = fullsizePicture.querySelector('.social__comments');
   const fragment = document.createDocumentFragment();
   comments.forEach((comment) => {
     const newComment = createComment(comment);
     fragment.append(newComment);
   });
-  commentsContainer.innerHTML = '';
-  commentsContainer.append(fragment);
+  commentsContainerElement.innerHTML = '';
+  commentsContainerElement.append(fragment);
 };
 
 const closePicture = () => {
   body.classList.remove('modal-open');
   fullsizePicture.classList.add('hidden');
   closeButton.removeEventListener('click', closePicture);
-  document.removeEventListener('keydown', closeByEscape);
+  document.removeEventListener('keydown', onEscapeKeydown);
 };
 
-function closeByEscape(evt) { //function должна использоваться как бы совместно с closePicture, иначе они закольцуются, то есть нужно (всплытие)
+function onEscapeKeydown(evt) { //function должна использоваться совместно с hideMessage,  важно для предотвращения зацикливания
   if (isEscapeKey(evt)) {
     closePicture();
   }
@@ -56,7 +56,7 @@ const openComments = () => {
     hiddenComments[i].classList.remove('hidden');
   }
   if (hiddenCommentsNumber - commentsNumber === 0) {
-    fullsizePicture.querySelector('.comments-loader').classList.add('hidden');
+    loaderButton.classList.add('hidden');
   }
 };
 
@@ -69,12 +69,12 @@ const openPicture = (picture) =>{
   fullsizePicture.querySelector('.comments-count').textContent = comments.length;
   fillComments(picture.comments);
   fullsizePicture.querySelector('.social__caption').textContent = description;
-  fullsizePicture.querySelector('.comments-loader').classList.remove('hidden');
+  loaderButton.classList.remove('hidden');
   currentComments.textContent = 0;
   openComments();
   loaderButton.addEventListener('click', openComments);
   closeButton.addEventListener('click', closePicture);
-  document.addEventListener('keydown', closeByEscape);
+  document.addEventListener('keydown', onEscapeKeydown);
 };
 
 export {openPicture};
