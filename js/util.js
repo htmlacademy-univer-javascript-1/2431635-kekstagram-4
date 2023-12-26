@@ -7,15 +7,15 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
-const getUniqueRandomElementsArray = (photos, count) => {
-  const copiedArray = photos.slice();
-  const uniqueElementsArray = [];
+const getUniqueRandomElements = (photos, count) => {
+  const copiedElements = photos.slice();
+  const uniqueElements = [];
   for (let i = 0; i < count; i++) {
-    const randomIndex = getRandomInteger(0, copiedArray.length - 1);
-    uniqueElementsArray.push(copiedArray[randomIndex]);
-    copiedArray.splice(randomIndex, 1);
+    const randomIndex = getRandomInteger(0, copiedElements.length - 1);
+    uniqueElements.push(copiedElements[randomIndex]);
+    copiedElements.splice(randomIndex, 1);
   }
-  return uniqueElementsArray;
+  return uniqueElements;
 };
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
@@ -28,4 +28,4 @@ const debounce = (callback, timeoutDelay = RERENDER_DELAY) => {
   };
 };
 
-export{getRandomInteger, getUniqueRandomElementsArray, isEscapeKey, debounce};
+export{getRandomInteger, getUniqueRandomElements, isEscapeKey, debounce};
