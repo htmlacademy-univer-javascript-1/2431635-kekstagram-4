@@ -35,9 +35,9 @@ noUiSlider.create(sliderContainerElement, {
 });
 
 sliderContainerElement.noUiSlider.on('update', () => {
+  const filterValues = filterName.split(' ');
   sliderValue.value = sliderContainerElement.noUiSlider.get();
-  const filter = filterName.split(' ');
-  picturePreview.style.filter = `${filter[0]}(${sliderValue.value}${filter[1]})`;
+  picturePreview.style.filter = `${filterValues[0]}(${sliderValue.value}${filterValues[1]})`;
 });
 
 filterItems.forEach((filter) => {
