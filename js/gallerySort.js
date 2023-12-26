@@ -1,5 +1,5 @@
 import {renderPictures} from './renderPictures.js';
-import {debounce, getUniqueRandomElements} from './util.js';
+import {debounce, getUniqueRandomElementsArray} from './util.js';
 
 const AMOUNT_RANDOM_PICTURES = 10;
 
@@ -8,35 +8,35 @@ const defaultfFilter = document.querySelector('#filter-default');
 const randomFilter = document.querySelector('#filter-random');
 const discussedFilter = document.querySelector('#filter-discussed');
 
-const comparePictureByComments = (pictureA, pictureB) => pictureB.comments.length - pictureA.comments.length;
-const getSortedPictures = (pictures) => pictures.slice().sort(comparePictureByComments);
+const comparePhotosByComments = (photoA, photoB) => photoB.comments.length - photoA.comments.length;
+const getSortedPhoto = (photo) => photo.slice().sort(comparePhotosByComments);
 
-const removePictures = () => {
-  const pictures = document.querySelectorAll('.picture');
-  pictures.forEach((picture) => {
-    picture.remove();
+const removePhotos = () => {
+  const picture = document.querySelectorAll('.picture');
+  picture.forEach((photo) => {
+    photo.remove();
   });
 };
 
-const changePictures = (pictures, button) => {
-  removePictures();
+const changePhoto = (array, button) => {
+  removePhotos();
   const active = document.querySelector('.img-filters__button--active');
   active.classList.remove('img-filters__button--active');
-  renderPictures(pictures);
+  renderPictures(array);
   button.classList.add('img-filters__button--active');
 };
 
-const showFilteredPhotos = (pictures) => {
-  renderPictures(pictures);
+const showFilteredPhotos = (photos) => {
+  renderPictures(photos);
   filterSection.classList.remove('img-filters--inactive');
   defaultfFilter.addEventListener('click', debounce(() => {
-    changePictures(pictures, defaultfFilter);
+    changePhoto(photos, defaultfFilter);
   }));
   randomFilter.addEventListener('click', debounce(() => {
-    changePictures(getUniqueRandomElements(pictures, AMOUNT_RANDOM_PICTURES), randomFilter);
+    changePhoto(getUniqueRandomElementsArray(photos, AMOUNT_RANDOM_PICTURES), randomFilter);
   }));
   discussedFilter.addEventListener('click', debounce(() => {
-    changePictures(getSortedPictures(pictures), discussedFilter);
+    changePhoto(getSortedPhoto(photos), discussedFilter);
   }));
 };
 
